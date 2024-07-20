@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { getTodos } from "./hooks/hooks";
 
 const FooterStyled = styled.footer`
     display: flex;
@@ -9,6 +10,8 @@ const FooterStyled = styled.footer`
 
     border-top: 1px solid;
     border-color: ${(props) => props.theme.colors.olive6};
+    
+    gap: 10px;
 `;
 
 type FooterProps = {
@@ -17,12 +20,16 @@ type FooterProps = {
 };
 
 export const Footer = (props: FooterProps) => {
-    const { todoItems, doneItems } = props;
+    // const { todoItems, doneItems } = props;
+    const {data} = getTodos();
+
+    const doneItems = (data || []).filter(({ isDone }) => isDone).length;
+    const todoItems = (data?.length ?? 0) - doneItems;
 
     return (
         <FooterStyled>
-            Todo: {todoItems}
-            Done: {todoItems}
+            <p>Todo: {todoItems ?? 0}</p>
+            <p>Done: {doneItems ?? 0}</p>
         </FooterStyled>
     );
 };
